@@ -9,13 +9,7 @@ class Node:
     
 class Linkedlist:
     def __init__(self):
-        self.head = None
-
-    def is_empty(self):
-        if self.head == None:
-            print('Empty: True')
-        else:
-            print('Empty: False')
+        self.head = Node(None)
 
     def add_tail(self, data):
         new_node = Node(data)
@@ -24,12 +18,26 @@ class Linkedlist:
             cur = cur.next
         cur.next = new_node
 
-    def add_head(self, data):
+    def add_head(self, data):#doesn't work if used more than once??-------------
         new_node = Node(data)
-        new_node.next = self.head
-        self.head = new_node 
+        if self.head.data != None:
+            endpoint = self.head.next
+            olddata = self.head.next.data#????next??
+            self.head.next = new_node
+            w = Node(olddata)
+            w.next = endpoint
+            new_node.next = w
+        
+        else:
+            self.head.next = new_node
+      
 
 
+    def is_empty(self):
+        if self.head.next == None:
+            print('Is empty? True')
+        else:
+            print('Is empty? False')
  
     def size(self):
         cur = self.head 
@@ -39,29 +47,28 @@ class Linkedlist:
             total += 1
             cur = cur.next
             if cur.next == self.head.next:
-                print (total)
+                print (f'Total num of nodes is: {total}')
                 _quit = 1
                 break
         if _quit == 0:
-            print(total)
+            print(f'Total num of nodes is: {total}')
 
     def __str__(self):
         elems = []
         cur = self.head
         _exit = 0
-        if cur:
-            while cur.next != None and _exit == 0:
-                cur = cur.next
-                elems.append(cur.data)
-                if cur.next == self.head.next:
-                    print (str(elems))
-                    _exit = 1
-                    break
-            if _exit == 0:
+        while cur.next != None and _exit == 0:
+            cur = cur.next
+            elems.append(cur.data)
+            if cur.next == self.head.next:
                 print (str(elems))
+                _exit = 1
+                break
+        if _exit == 0:
+            print (str(elems))
             
 
-    def remove_first(self, search):
+    def remove_first(self, search):#----- remove-----------
         cur = self.head
         _stop = 0
         
@@ -71,6 +78,19 @@ class Linkedlist:
                 _stop = 1
             else:
                 cur = cur.next
+
+    def search(self, search):#----- search
+        cur = self.head
+        _stop = 0
+        _count = 0
+        while cur.next != None and _stop == 0:
+            if cur.data == search:
+                print(f'Search for "{search}" has been found in node {_count}')
+                break
+            else:
+                _count += 1
+                cur = cur.next
+
 
 
     def _return(self):
@@ -108,20 +128,25 @@ class Linkedlist:
 
 
                         
-
+print ('\n'*100)
 my_list = Linkedlist()
 my_list.__str__()
-my_list.is_empty()
+
+
 my_list.add_head('Head')
-my_list.add_head('t')
+my_list.add_head('newhead')
+
 my_list.add_tail(1)
 my_list.add_tail(2)
 my_list.add_tail(3)
-my_list.create_cycle()
+print('Stuff added')
+# my_list.create_cycle()
+print('Cycle Created')
 my_list.__str__()
 my_list.is_empty()
 my_list.size()
 my_list._return()
-my_list.remove_first(2)#fix to actually remove
+
+
+my_list.search(2)#fix to actually remove
 my_list.has_cycle()
-my_list.is_empty()
